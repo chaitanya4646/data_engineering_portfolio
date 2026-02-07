@@ -1,1 +1,15 @@
+# Fundamentals
+
+This section covers basic concepts required for data engineering.
+
+## Topics
+
+- What is data engineering
+- Types of data (structured, semi-structured, unstructured)
+- ETL vs ELT
+- Batch processing vs streaming
+- OLTP vs OLAP
+- Data warehouse vs data lake
+
+These concepts are common across all data engineering tools and projects.
 
