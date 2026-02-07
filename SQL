@@ -1,1 +1,34 @@
-SQL
+# SQL Notes
+
+SQL concepts used for querying and analyzing data.
+
+## Topics
+
+- SELECT  
+  Used to fetch data from tables.  
+  Example: SELECT * FROM orders;  
+  Real-life: Fetching records for analysis.
+
+- WHERE and GROUP BY  
+  WHERE filters rows, GROUP BY aggregates data.  
+  Example: Total sales per country.  
+  Real-life: Business reports grouped by region.
+
+- Joins  
+  Combine data from multiple tables.  
+  Example: Orders joined with customers.  
+  Real-life: Joining transaction data with master data.
+
+- CTE (WITH clause)  
+  Used to simplify complex queries.  
+  Example: Breaking query into readable steps.  
+  Real-life: Used in large reporting queries.
+
+- Window Functions  
+  Perform calculations without collapsing rows.  
+  Example: Rank sales per employee.  
+  Real-life: Finding top performers per region.
+
+- GROUP BY vs Window  
+  GROUP BY reduces rows; window keeps all rows.  
+  Real-life: Running totals and rankings.
