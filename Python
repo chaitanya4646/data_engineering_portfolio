@@ -1,0 +1,29 @@
+# Python Notes
+
+Python concepts commonly used in data pipelines.
+
+## Topics
+
+- Python Basics  
+  Variables, data types, and basic syntax.  
+  Example: Storing values in lists and dictionaries.  
+  Real-life: Preparing data before loading.
+
+- Functions and Loops  
+  Used to reuse logic and iterate over data.  
+  Example: Looping through files in a folder.  
+  Real-life: Processing multiple input files.
+
+- File Handling  
+  Reading and writing files.  
+  Example: Reading CSV using pandas.  
+  Real-life: Ingesting raw data from storage.
+
+- JSON and CSV Processing  
+  Handling common data formats.  
+  Example: Parsing API response JSON.  
+  Real-life: API data ingestion pipelines.
+
+- Python in ETL  
+  Used for lightweight transformations.  
+  Real-life: Pre-processing before Spark jobs.
