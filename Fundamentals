@@ -1,15 +1,35 @@
 # Fundamentals
 
-This section covers basic concepts required for data engineering.
+Core concepts that form the base of data engineering.
 
 ## Topics
 
-- What is data engineering
-- Types of data (structured, semi-structured, unstructured)
-- ETL vs ELT
-- Batch processing vs streaming
-- OLTP vs OLAP
-- Data warehouse vs data lake
+- Data Engineering  
+  Building systems to collect, process, and store data for analytics.  
+  Example: Moving sales data from source systems to a data lake for reporting.  
+  Real-life: Companies use data engineering to prepare data for dashboards.
 
-These concepts are common across all data engineering tools and projects.
+- Structured, Semi-structured, Unstructured Data  
+  Different formats of data based on schema flexibility.  
+  Example: Tables (structured), JSON (semi), images (unstructured).  
+  Real-life: Logs usually come as JSON, while transactions are tables.
 
+- ETL vs ELT  
+  ETL transforms data before loading; ELT transforms after loading.  
+  Example: Cleaning data in Spark before storing vs after storing in Synapse.  
+  Real-life: ELT is common with cloud data warehouses.
+
+- Batch vs Streaming  
+  Batch processes data in chunks; streaming processes data continuously.  
+  Example: Daily sales batch vs live clickstream data.  
+  Real-life: Banking reports use batch, IoT systems use streaming.
+
+- OLTP vs OLAP  
+  OLTP handles transactions; OLAP handles analysis.  
+  Example: Order placement vs sales summary report.  
+  Real-life: Application DB vs reporting system.
+
+- Data Warehouse vs Data Lake  
+  Warehouse stores structured data; lake stores all data types.  
+  Example: Synapse vs ADLS.  
+  Real-life: Raw data lands in lake, reports read from warehouse.
