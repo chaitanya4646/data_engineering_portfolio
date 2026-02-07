@@ -1,0 +1,197 @@
+# PySpark DataFrame – Practical Notes with Industry Real Project Example
+
+------------------------------------------------------------------------------------------------------
+
+# Industry Use Case – Sales Analytics Project
+
+This example is based on a real-world industry scenario.
+
+Business Problem:
+- Company wants to analyze sales data
+- Calculate revenue
+- Identify high-value customers
+- Generate reports
+
+Data Sources:
+- Orders data
+- Customers data
+
+------------------------------------------------------------------------------------------------------
+
+# Orders DataFrame (Source System)
+
+Columns:
+- order_id
+- customer_id
+- product
+- quantity
+- price
+
+Create Orders DataFrame:
+
+orders_data = [
+    (1, 101, "Laptop", 1, 50000),
+    (2, 102, "Mobile", 2, 20000),
+    (3, 101, "Mouse", 3, 500),
+    (4, 103, "Keyboard", 1, 1500),
+    (5, 104, "Monitor", 2, 8000)
+]
+
+orders_columns = ["order_id", "customer_id", "product", "quantity", "price"]
+
+orders_df = spark.createDataFrame(orders_data, orders_columns)
+
+------------------------------------------------------------------------------------------------------
+
+# Orders DataFrame Output (df.show())
+
++--------+------------+--------+--------+------+
+|order_id|customer_id |product |quantity|price |
++--------+------------+--------+--------+------+
+|1       |101         |Laptop  |1       |50000 |
+|2       |102         |Mobile  |2       |20000 |
+|3       |101         |Mouse   |3       |500   |
+|4       |103         |Keyboard|1       |1500  |
+|5       |104         |Monitor |2       |8000  |
++--------+------------+--------+--------+------+
+
+------------------------------------------------------------------------------------------------------
+
+# Customers DataFrame (Master Data)
+
+Columns:
+- customer_id
+- customer_name
+- city
+
+Create Customers DataFrame:
+
+customers_data = [
+    (101, "Rahul", "Mumbai"),
+    (102, "Anita", "Pune"),
+    (103, "Suresh", "Delhi"),
+    (105, "Neha", "Bangalore")
+]
+
+customers_columns = ["customer_id", "customer_name", "city"]
+
+customers_df = spark.createDataFrame(customers_data, customers_columns)
+
+------------------------------------------------------------------------------------------------------
+
+# Customers DataFrame Output (df.show())
+
++------------+-------------+----------+
+|customer_id |customer_name|city      |
++------------+-------------+----------+
+|101         |Rahul        |Mumbai    |
+|102         |Anita        |Pune      |
+|103         |Suresh       |Delhi     |
+|105         |Neha         |Bangalore |
++------------+-------------+----------+
+
+------------------------------------------------------------------------------------------------------
+
+# Add Derived Column – Total Amount
+
+Business Logic:
+- total_amount = quantity * price
+
+Transformation:
+
+orders_enriched_df = orders_df.withColumn("total_amount", orders_df.quantity * orders_df.price)
+
+------------------------------------------------------------------------------------------------------
+
+# Output After Adding total_amount
+
++--------+------------+--------+--------+------+------------+
+|order_id|customer_id |product |quantity|price |total_amount|
++--------+------------+--------+--------+------+------------+
+|1       |101         |Laptop  |1       |50000 |50000       |
+|2       |102         |Mobile  |2       |20000 |40000       |
+|3       |101         |Mouse   |3       |500   |1500        |
+|4       |103         |Keyboard|1       |1500  |1500        |
+|5       |104         |Monitor |2       |8000  |16000       |
++--------+------------+--------+--------+------+------------+
+
+------------------------------------------------------------------------------------------------------
+
+# Join Orders with Customers (Left Join)
+
+Purpose:
+- Attach customer details to each order
+- Orders should not be lost
+
+Join Logic:
+
+final_df = orders_enriched_df.join(customers_df, "customer_id", "left")
+
+------------------------------------------------------------------------------------------------------
+
+# Joined DataFrame Output
+
++------------+--------+--------+--------+------+------------+-------------+--------+
+|customer_id |order_id|product |quantity|price |total_amount|customer_name|city    |
++------------+--------+--------+--------+------+------------+-------------+--------+
+|101         |1       |Laptop  |1       |50000 |50000       |Rahul        |Mumbai  |
+|101         |3       |Mouse   |3       |500   |1500        |Rahul        |Mumbai  |
+|102         |2       |Mobile  |2       |20000 |40000       |Anita        |Pune    |
+|103         |4       |Keyboard|1       |1500  |1500        |Suresh       |Delhi   |
+|104         |5       |Monitor |2       |8000  |16000       |null         |null    |
++------------+--------+--------+--------+------+------------+-------------+--------+
+
+------------------------------------------------------------------------------------------------------
+
+# Business Insight – Customer Revenue
+
+Requirement:
+- Calculate total revenue per customer
+
+Aggregation:
+
+revenue_df = final_df.groupBy("customer_name") \
+    .sum("total_amount")
+
+------------------------------------------------------------------------------------------------------
+
+# Revenue Output
+
++-------------+------------------+
+|customer_name|sum(total_amount) |
++-------------+------------------+
+|Rahul        |51500             |
+|Anita        |40000             |
+|Suresh       |1500              |
+|null         |16000             |
++-------------+------------------+
+
+------------------------------------------------------------------------------------------------------
+
+# Real Industry Observations
+
+- NULL customer indicates missing master data
+- Revenue calculation done using aggregation
+- Join type selection impacts final output
+- Derived columns are common in ETL pipelines
+
+------------------------------------------------------------------------------------------------------
+
+# How This Is Used in Industry
+
+- Daily sales report generation
+- Revenue dashboards
+- Customer segmentation
+- Feeding data to BI tools
+- Writing output to Data Lake / Warehouse
+
+------------------------------------------------------------------------------------------------------
+
+# Final Summary
+
+- DataFrames are used end-to-end in real projects
+- Read → Transform → Join → Aggregate → Write
+- Same pattern used across industries
+- This is how PySpark is applied practically
+
+------------------------------------------------------------------------------------------------------
