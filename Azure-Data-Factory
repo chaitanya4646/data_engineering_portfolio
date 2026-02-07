@@ -1,0 +1,33 @@
+# Azure Data Factory Notes
+
+Data orchestration and integration service.
+
+## Topics
+
+- Azure Data Factory  
+  Tool to create and schedule data pipelines.  
+  Real-life: Moving data from source to data lake.
+
+- Pipelines and Activities  
+  Pipeline contains activities.  
+  Real-life: Copy + transformation workflows.
+
+- Linked Services and Datasets  
+  Connections and metadata.  
+  Real-life: Connecting to databases and storage.
+
+- Triggers  
+  Schedule or event-based execution.  
+  Real-life: Daily batch or file arrival trigger.
+
+- Parameters and Variables  
+  Used for dynamic pipelines.  
+  Real-life: Same pipeline for multiple files.
+
+- Incremental Load  
+  Load only new or changed data.  
+  Real-life: Daily data sync.
+
+- Duplicate Handling  
+  Preventing duplicate records.  
+  Real-life: Idempotent pipelines.
