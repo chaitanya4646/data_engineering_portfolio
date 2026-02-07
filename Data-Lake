@@ -1,0 +1,28 @@
+# Data Lake Notes
+
+Storage concepts for handling large-scale data.
+
+## Topics
+
+- Data Lake  
+  Central storage for all types of data.  
+  Example: ADLS storing raw and processed data.  
+  Real-life: First landing zone for enterprise data.
+
+- ADLS Gen2  
+  Azure storage optimized for analytics.  
+  Real-life: Used with Spark and ADF.
+
+- Layered Architecture  
+  Raw, curated, and processed layers.  
+  Example: Raw data cleaned into curated layer.  
+  Real-life: Simplifies debugging and reprocessing.
+
+- File Formats  
+  CSV, JSON, Parquet.  
+  Example: Parquet for analytics performance.  
+  Real-life: Parquet used for Spark jobs.
+
+- Partitioning  
+  Organizing data by columns like date.  
+  Real-life: Faster queries on large datasets.
