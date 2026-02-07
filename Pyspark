@@ -1,0 +1,403 @@
+# PySpark Complete Notes (Start to End)
+
+------------------------------------------------------------------------------------------------------
+
+# What is Big Data
+
+Big Data refers to data that is:
+- Very large in size
+- Generated very fast
+- Comes in multiple formats
+
+Problems with Big Data:
+- Cannot be processed by a single machine
+- Traditional databases are slow
+- Needs distributed processing
+
+------------------------------------------------------------------------------------------------------
+
+# Why Apache Spark
+
+Apache Spark is used to process Big Data efficiently.
+
+Reasons:
+- Distributed processing
+- In-memory computation (very fast)
+- Easy APIs (Python, Java, Scala)
+- Handles batch, streaming, SQL, ML
+
+------------------------------------------------------------------------------------------------------
+
+# What is PySpark
+
+PySpark is the Python API for Apache Spark.
+
+- Allows using Spark with Python
+- Used for large-scale data processing
+- Works on clusters
+
+Real-life use:
+- ETL pipelines
+- Log analysis
+- Data transformation
+- Analytics
+
+------------------------------------------------------------------------------------------------------
+
+# Spark Architecture
+
+Spark follows a distributed architecture.
+
+Main components:
+- Driver Program
+- Cluster Manager
+- Worker Nodes
+- Executors
+
+------------------------------------------------------------------------------------------------------
+
+# Driver Program
+
+Driver is the main program.
+
+Responsibilities:
+- Starts SparkSession
+- Creates execution plan (DAG)
+- Assigns tasks
+- Collects results
+
+------------------------------------------------------------------------------------------------------
+
+# Cluster Manager
+
+Manages cluster resources.
+
+Examples:
+- YARN
+- Kubernetes
+- Spark Standalone
+
+------------------------------------------------------------------------------------------------------
+
+# Executors
+
+Executors run on worker machines.
+
+Responsibilities:
+- Execute tasks
+- Store data in memory
+- Return results to driver
+
+------------------------------------------------------------------------------------------------------
+
+# SparkSession
+
+SparkSession is the entry point for PySpark.
+
+Syntax:
+spark = SparkSession.builder.appName("AppName").getOrCreate()
+
+Example:
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("FirstApp") \
+    .getOrCreate()
+
+------------------------------------------------------------------------------------------------------
+
+# RDD (Resilient Distributed Dataset)
+
+RDD is a low-level distributed data structure.
+
+Characteristics:
+- Immutable
+- Distributed
+- Fault-tolerant
+
+Use case:
+- When low-level control is required
+- Rarely used now
+
+------------------------------------------------------------------------------------------------------
+
+# RDD Example
+
+Create RDD:
+rdd = spark.sparkContext.parallelize([1, 2, 3, 4])
+
+Transformation:
+rdd2 = rdd.map(lambda x: x * 2)
+
+Action:
+rdd2.collect()
+
+------------------------------------------------------------------------------------------------------
+
+# Why DataFrame Instead of RDD
+
+RDD problems:
+- No schema
+- Hard to optimize
+- More code
+
+DataFrame advantages:
+- Structured data
+- Optimized automatically
+- Easy syntax
+
+------------------------------------------------------------------------------------------------------
+
+# DataFrame
+
+DataFrame is a structured distributed dataset.
+
+Features:
+- Schema-based
+- Optimized by Catalyst Optimizer
+- Faster than RDD
+
+------------------------------------------------------------------------------------------------------
+
+# Create DataFrame
+
+Example:
+data = [
+    (1, "Chaitanya", 50000),
+    (2, "Amit", 60000),
+    (3, "Neha", 55000)
+]
+
+df = spark.createDataFrame(data, ["id", "name", "salary"])
+
+------------------------------------------------------------------------------------------------------
+
+# DataFrame Basic Operations
+
+Show data:
+df.show()
+
+Schema:
+df.printSchema()
+
+Select column:
+df.select("name").show()
+
+Filter data:
+df.filter(df.salary > 50000).show()
+
+------------------------------------------------------------------------------------------------------
+
+# Transformations
+
+Transformations are lazy operations.
+
+Meaning:
+- Execution does NOT start
+- Spark only builds a plan
+
+Examples:
+df.select("name")
+df.filter(df.salary > 50000)
+df.withColumn("bonus", df.salary * 0.1)
+
+------------------------------------------------------------------------------------------------------
+
+# Actions
+
+Actions trigger execution.
+
+Meaning:
+- Spark executes the DAG
+- Returns output
+
+Examples:
+df.show()
+df.count()
+df.collect()
+
+------------------------------------------------------------------------------------------------------
+
+# Lazy Evaluation
+
+Spark does not execute transformations immediately.
+
+Benefits:
+- Optimization
+- Less computation
+- Faster execution
+
+------------------------------------------------------------------------------------------------------
+
+# DAG (Directed Acyclic Graph)
+
+DAG is the execution plan.
+
+- Created by Spark
+- Optimized before execution
+- Sent to executors
+
+------------------------------------------------------------------------------------------------------
+
+# Joins
+
+Joins combine data from multiple DataFrames.
+
+Sample Data:
+
+orders = spark.createDataFrame([
+    (1, 101, 1000),
+    (2, 102, 2000),
+    (3, 103, 1500)
+], ["order_id", "customer_id", "amount"])
+
+customers = spark.createDataFrame([
+    (101, "Rahul"),
+    (102, "Anita"),
+    (104, "Suresh")
+], ["customer_id", "name"])
+
+------------------------------------------------------------------------------------------------------
+
+# Inner Join
+
+Syntax:
+orders.join(customers, "customer_id", "inner")
+
+Result:
+- Only matching records
+
+------------------------------------------------------------------------------------------------------
+
+# Left Join
+
+Syntax:
+orders.join(customers, "customer_id", "left")
+
+Result:
+- All left records
+- Matching right records
+
+------------------------------------------------------------------------------------------------------
+
+# Right Join
+
+Syntax:
+orders.join(customers, "customer_id", "right")
+
+Result:
+- All right records
+- Matching left records
+
+------------------------------------------------------------------------------------------------------
+
+# Full Outer Join
+
+Syntax:
+orders.join(customers, "customer_id", "outer")
+
+Result:
+- All records from both sides
+
+------------------------------------------------------------------------------------------------------
+
+# Left Semi Join
+
+Syntax:
+orders.join(customers, "customer_id", "left_semi")
+
+Result:
+- Only left rows with match
+- No right columns
+
+------------------------------------------------------------------------------------------------------
+
+# Left Anti Join
+
+Syntax:
+orders.join(customers, "customer_id", "left_anti")
+
+Result:
+- Left rows with NO match
+
+------------------------------------------------------------------------------------------------------
+
+# Group By
+
+Used for aggregation.
+
+Example:
+df.groupBy("name").count().show()
+
+------------------------------------------------------------------------------------------------------
+
+# Aggregation Functions
+
+Common functions:
+- count()
+- sum()
+- avg()
+- min()
+- max()
+
+Example:
+df.groupBy("name").sum("salary").show()
+
+------------------------------------------------------------------------------------------------------
+
+# Spark SQL
+
+Spark allows SQL queries on DataFrames.
+
+Create temp view:
+df.createOrReplaceTempView("employees")
+
+Query:
+spark.sql("SELECT name, salary FROM employees WHERE salary > 50000").show()
+
+------------------------------------------------------------------------------------------------------
+
+# Read Data from File
+
+CSV:
+spark.read.csv("file.csv", header=True, inferSchema=True)
+
+JSON:
+spark.read.json("file.json")
+
+Parquet:
+spark.read.parquet("file.parquet")
+
+------------------------------------------------------------------------------------------------------
+
+# Write Data to File
+
+CSV:
+df.write.csv("output/path")
+
+Parquet:
+df.write.parquet("output/path")
+
+------------------------------------------------------------------------------------------------------
+
+# When to Use PySpark
+
+Use PySpark when:
+- Data is very large
+- Distributed processing needed
+- Performance is critical
+- ETL pipelines
+
+------------------------------------------------------------------------------------------------------
+
+# Summary
+
+- Spark = Distributed engine
+- PySpark = Python API
+- RDD = Low-level
+- DataFrame = Preferred
+- Transformations = Lazy
+- Actions = Trigger execution
+- Optimized and scalable
+
+------------------------------------------------------------------------------------------------------
